@@ -11,7 +11,7 @@ import util.MyButton;
 import util.RandomID;
 
 public class InitialPage extends ATMManage implements MouseListener{
-
+	
 	static InitialPage initialPage;
 	MyButton lost,login,register,exit;
 	JLabel welcome;

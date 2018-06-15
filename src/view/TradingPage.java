@@ -70,7 +70,8 @@ public class TradingPage extends ATMManage implements MouseListener{
 	public void mouseClicked(MouseEvent e) {
 		//´æ¿î
 		if(e.getSource()==deposit) {
-			
+			DepositPage.depositPage=new DepositPage();
+			tradingPage.setVisible(false);
 		}
 		//ÍË³ö
 		else if(e.getSource()==exit) {
