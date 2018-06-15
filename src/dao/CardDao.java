@@ -1,9 +1,6 @@
 package dao;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 import model.CardInfo;
 
@@ -15,8 +12,8 @@ public class CardDao extends BaseDao {
 	public static boolean executeInsert(CardInfo card) {
 		conn=getConn();
 		int state=0;
-		String sql="insert into cardinfo(cardID,curType,savingType,openDate,openMoney,balance,"
-				+ "pass,IsReportLoss,customerID) values(?,?,?,?,?,?,?,?,?)";
+		String sql="INSERT INTO cardinfo(cardID,curType,savingType,openDate,openMoney,balance,"
+				+ "pass,IsReportLoss,customerID) VALUES(?,?,?,?,?,?,?,?,?)";
 		try {
 			PreparedStatement pStatement=conn.prepareStatement(sql);
 			pStatement.setString(1,card.getCardID());
@@ -46,7 +43,7 @@ public class CardDao extends BaseDao {
 	public static boolean executeDelete(String cardID) {
 		conn=getConn();
 		int state=0;
-		String sql="delete from cardinfo where cardID=?";
+		String sql="DELETE FROM cardinfo WHERE cardID=?";
 		try {
 			PreparedStatement pStatement=conn.prepareStatement(sql);
 			pStatement.setString(1,cardID);
@@ -62,5 +59,52 @@ public class CardDao extends BaseDao {
 		}
 		if(state!=1)return false;
 		return true;
+	}
+
+	public static int executeLogin(String cardID,String pass) {
+		conn=getConn();
+		int state=1;//0为成功，1为查无此卡，2为密码错误
+		String sql="SELECT cardID FROM cardinfo WHERE cardID=?";
+		try {
+			PreparedStatement pStatement=conn.prepareStatement(sql);
+			pStatement.setString(1,cardID);
+			ResultSet rs=pStatement.executeQuery(sql);
+            if(rs.next()){
+                //Retrieve by column name
+                String cardIDForLogin  = rs.getString("cardID");
+                //System.out.print("ID: " + id);
+                state=0;
+            }
+            else{
+                state=1;
+            }
+            rs.close();
+            //验证是否存在该卡，存在state为0，不存在为1
+            if(state==0){
+                sql = "SELECT pass FROM cardinfo WHERE cardID=?";
+                pStatement.setString(1,cardID);
+                rs=pStatement.executeQuery(sql);
+                if(rs.next()){
+                    String cardPassForLogin = rs.getNString("pass");
+                    if(cardPassForLogin==pass){
+                        state=0;
+                    }
+                    else {
+                        state=2;
+                    }
+                }
+                rs.close();
+                //验证密码是否正确，正确返回0，错误返回2
+            }
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return state;
 	}
 }
