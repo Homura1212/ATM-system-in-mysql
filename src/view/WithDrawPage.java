@@ -15,7 +15,7 @@ import util.MyButton;
 public class WithDrawPage extends ATMManage implements MouseListener,KeyListener{
 
 	static WithDrawPage withDrawPage;
-	private JLabel welcome;
+	private JLabel welcome,moneyLabel;
 	private JTextField input;
 	private MyButton y100,y500,y1000,y2000,y5000,y10000,confirm,back;
 	public WithDrawPage() {
@@ -55,9 +55,16 @@ public class WithDrawPage extends ATMManage implements MouseListener,KeyListener
 		panel.add(y10000);
 		y10000.addMouseListener(this);
 		
+		
+		moneyLabel=new JLabel("取款金额：");
+		moneyLabel.setBounds(300,330,250,60);
+		moneyLabel.setFont(new Font("宋体",Font.BOLD,40));
+		moneyLabel.setForeground(Color.orange);
+		panel.add(moneyLabel);
+		
 		//添加确认按钮
 		confirm=new MyButton("confirm","gif");
-		confirm.setBounds(350,500,170,60);
+		confirm.setBounds(700,600,170,60);
 		panel.add(confirm);
 		confirm.addMouseListener(this);
 		
