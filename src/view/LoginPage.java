@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import dao.CardDao;
 import util.MyButton;
 import util.RegisterPanel;
 
@@ -112,6 +113,7 @@ public class LoginPage extends ATMManage implements MouseListener{
 	}
 	public boolean isRight() {
 		int flag=0;
+		System.out.println(CardDao.executeLogin(PID.getText(), pass.getText()));
 		//卡号不存在
 		if(false) {
 			wrongLabel3[0]=new JLabel("卡号不存在");

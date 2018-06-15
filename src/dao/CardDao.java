@@ -68,12 +68,12 @@ public class CardDao extends BaseDao {
 		try {
 			PreparedStatement pStatement=conn.prepareStatement(sql);
 			pStatement.setString(1,cardID);
-			ResultSet rs=pStatement.executeQuery(sql);
-            if(rs.next()){
-                //Retrieve by column name
-                String cardIDForLogin  = rs.getString("cardID");
-                //System.out.print("ID: " + id);
-                state=0;
+			ResultSet rs=pStatement.executeQuery();
+			if(rs.next()){
+				//Retrieve by column name
+				String cardIDForLogin  = rs.getString("cardID");
+				//System.out.print("ID: " + id);
+				state=0;
             }
             else{
                 state=1;
@@ -82,11 +82,12 @@ public class CardDao extends BaseDao {
             //验证是否存在该卡，存在state为0，不存在为1
             if(state==0){
                 sql = "SELECT pass FROM cardinfo WHERE cardID=?";
+                pStatement=conn.prepareStatement(sql);
                 pStatement.setString(1,cardID);
-                rs=pStatement.executeQuery(sql);
+                rs=pStatement.executeQuery();
                 if(rs.next()){
-                    String cardPassForLogin = rs.getNString("pass");
-                    if(cardPassForLogin==pass){
+                    String cardPassForLogin = rs.getString("pass");
+                    if(cardPassForLogin.equals(pass)){
                         state=0;
                     }
                     else {

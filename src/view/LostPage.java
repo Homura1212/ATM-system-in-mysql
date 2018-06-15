@@ -34,7 +34,7 @@ public class LostPage extends ATMManage implements MouseListener,KeyListener{
 		cardID =new JTextField();
 		cardID.setBounds(330,130,300,50);
 		panel.add(cardID);
-		
+		cardID.addKeyListener(this);
 		
 		nameLabel = new JLabel("开户名  ：");
 		nameLabel.setBounds(150,230,180,50);
@@ -53,6 +53,7 @@ public class LostPage extends ATMManage implements MouseListener,KeyListener{
 		ID =new JTextField();
 		ID.setBounds(330,330,300,50);
 		panel.add(ID);
+		ID.addKeyListener(this);
 		
 		telephoneLabel = new JLabel("联系电话：");
 		telephoneLabel.setBounds(150,430,180,50);
@@ -62,6 +63,7 @@ public class LostPage extends ATMManage implements MouseListener,KeyListener{
 		telephone =new JTextField();
 		telephone.setBounds(330,430,300,50);
 		panel.add(telephone);
+		telephone.addKeyListener(this);
 		
 		
 		
