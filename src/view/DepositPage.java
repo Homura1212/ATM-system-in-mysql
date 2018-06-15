@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 import util.MyButton;
 
@@ -13,52 +14,66 @@ public class DepositPage extends ATMManage implements MouseListener{
 
 	static DepositPage depositPage;
 	private JLabel welcome;
+	private JTextField input;
 	private MyButton y100,y500,y1000,y2000,y5000,y10000,confirm,back;
 	public DepositPage() {
-		//æ·»åŠ 100å…ƒæŒ‰é’®
+		//Ìí¼Ó100Ôª°´Å¥
 		y100=new MyButton("100","gif");
 		y100.setBounds(700,300,170,60);
 		panel.add(y100);
 		y100.addMouseListener(this);
 		
-		//æ·»åŠ 500å…ƒæŒ‰é’®
+		//Ìí¼Ó500Ôª°´Å¥
 		y500=new MyButton("500","gif");
 		y500.setBounds(700,400,170,60);
 		panel.add(y500);
 		y500.addMouseListener(this);	
 		
-		//æ·»åŠ 1000å…ƒæŒ‰é’®
+		//Ìí¼Ó1000Ôª°´Å¥
 		y1000=new MyButton("1000","gif");
 		y1000.setBounds(700,500,170,60);
 		panel.add(y1000);
 		y1000.addMouseListener(this);	
 		
-		//æ·»åŠ 200å…ƒæŒ‰é’®
+		//Ìí¼Ó200Ôª°´Å¥
 		y2000=new MyButton("2000","gif");
 		y2000.setBounds(30,300,170,60);
 		panel.add(y2000);
 		y2000.addMouseListener(this);
 		
-		//æ·»åŠ 5000å…ƒæŒ‰é’®
+		//Ìí¼Ó5000Ôª°´Å¥
 		y5000=new MyButton("5000","gif");
 		y5000.setBounds(30,400,170,60);
 		panel.add(y5000);
 		y5000.addMouseListener(this);
 		
-		//æ·»åŠ 10000å…ƒæŒ‰é’®
+		//Ìí¼Ó10000Ôª°´Å¥
 		y10000=new MyButton("10000","gif");
 		y10000.setBounds(30,500,170,60);
 		panel.add(y10000);
 		y10000.addMouseListener(this);
-		//æ·»åŠ ç¡®è®¤æŒ‰é’®
-		confirm=new MyButton("exit","gif");
-		confirm.setBounds(700,600,170,60);
+		
+		//Ìí¼ÓÈ·ÈÏ°´Å¥
+		confirm=new MyButton("confirm","gif");
+		confirm.setBounds(350,500,170,60);
 		panel.add(confirm);
 		confirm.addMouseListener(this);
 		
-		welcome=new JLabel("è¯·è¾“å…¥å­˜æ¬¾é‡‘é¢ï¼š");
+		//Ìí¼Ó·µ»Ø°´Å¥
+		back=new MyButton("back","gif");
+		back.setBounds(30,600,170,60);
+		panel.add(back);
+		back.addMouseListener(this);
+		
+		//Ìí¼ÓÊäÈë¿ò
+		input=new JTextField();
+		input.setBounds(350,400,170,60);
+		input.setFont(new Font("ºÚÌå", Font.BOLD, 20));
+		panel.add(input);
+		
+		welcome=new JLabel("ÇëÊäÈë´æ¿î½ğ¶î£º");
 		welcome.setBounds(100,100,700,100);
-		welcome.setFont(new Font("é»‘ä½“", Font.BOLD, 50));
+		welcome.setFont(new Font("ºÚÌå", Font.BOLD, 50));
 		welcome.setForeground(Color.white);
 		panel.add(welcome);
 		
@@ -66,27 +81,46 @@ public class DepositPage extends ATMManage implements MouseListener{
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		if(e.getSource()==confirm) {
+			
+		}
+		else if(e.getSource()==y100) {
+			input.setText("100");
+		}
+		else if(e.getSource()==y500) {
+			input.setText("500");
+		}
+		else if(e.getSource()==y1000) {
+			input.setText("1000");
+		}
+		else if(e.getSource()==y2000) {
+			input.setText("2000");
+		}
+		else if(e.getSource()==y5000) {
+			input.setText("5000");
+		}
+		else if(e.getSource()==y10000) {
+			input.setText("10000");
+		}
+		else if(e.getSource()==back) {
+			depositPage.dispose();
+			TradingPage.tradingPage.setVisible(true);
+		}
 	}
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 }
