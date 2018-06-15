@@ -108,4 +108,97 @@ public class CardDao extends BaseDao {
 		}
 		return state;
 	}
+    public static float executeBalance(String cardID) {
+        conn=getConn();
+        float balance=0;//0为成功，1为查无此卡，2为密码错误
+        String sql="SELECT balance FROM cardinfo WHERE cardID=?";
+        try {
+            PreparedStatement pStatement=conn.prepareStatement(sql);
+            pStatement.setString(1,cardID);
+            ResultSet rs=pStatement.executeQuery();
+            if(rs.next()){
+                float myBalance  = rs.getFloat("balance");
+                balance=myBalance;
+            }
+            else{
+                balance=-1;
+            }
+            rs.close();
+            //验证是否存在该卡，存在state为0，不存在为1
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return balance;
+    }
+
+    public static float executeOperate(String cardID,float amount,boolean operateState) {
+        conn=getConn();
+        float balance=-1;//默认为-1
+        String sql="SELECT balance FROM cardinfo WHERE cardID=?";
+        try {
+            PreparedStatement pStatement=conn.prepareStatement(sql);
+            pStatement.setString(1,cardID);
+            ResultSet rs=pStatement.executeQuery();
+            if(rs.next()){
+                float myBalance  = rs.getFloat("balance");
+                if(operateState==true){//存款
+                    sql="UPDATE cardinfo SET amount=? WHERE cardID=?";
+                    pStatement=conn.prepareStatement(sql);
+                    pStatement.setFloat(1,(myBalance+amount));
+                    pStatement.setString(2,cardID);
+                    if(pStatement.executeUpdate()!=0){//如果成功UPDATE
+                        balance=myBalance+amount;
+                        sql="INSERT INTO transinfo(transdate,cardID,transtype,transmoney) VALUES(?,?,?,?)";
+                        pStatement=conn.prepareStatement(sql);
+                        pStatement.setDate(1,new Date(2018/6/15));
+                        pStatement.setString(2,cardID);
+                        pStatement.setString(3,"存款");
+                        pStatement.setFloat(4,amount);
+                    }
+                }
+                else {//取款
+                    if(myBalance>=amount){
+                        sql="UPDATE cardinfo SET amount=? WHERE cardID=?";
+                        pStatement=conn.prepareStatement(sql);
+                        pStatement.setFloat(1,(myBalance-amount));
+                        pStatement.setString(2,cardID);
+                        if(pStatement.executeUpdate()!=0){//如果成功UPDATE
+                            balance=myBalance-amount;
+                            sql="INSERT INTO transinfo(transdate,cardID,transtype,transmoney) VALUES(?,?,?,?)";
+                            pStatement=conn.prepareStatement(sql);
+                            pStatement.setDate(1,new Date(2018/6/15));
+                            pStatement.setString(2,cardID);
+                            pStatement.setString(3,"取款");
+                            pStatement.setFloat(4,amount);
+                        }
+                    }
+                    else {
+                        balance=-1;//取款数目比余额多，失败返回-1
+                    }
+                }
+            }
+            else {
+                balance=-1;//若余额不存在
+            }
+
+            //验证是否存在该卡，存在state为0，不存在为1
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return balance;
+    }
 }
