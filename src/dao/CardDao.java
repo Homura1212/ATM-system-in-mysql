@@ -42,7 +42,7 @@ public class CardDao extends BaseDao {
 		return true;
 	}
 	
-	//根据用户ID来删除该UserInfo
+	//根据卡号来删除该CardInfo
 	public static boolean executeDelete(String cardID) {
 		conn=getConn();
 		int state=0;

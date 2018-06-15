@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
 
 import util.MyButton;
 import util.RandomID;
@@ -14,7 +15,7 @@ public class InitialPage extends ATMManage implements MouseListener{
 	
 	static InitialPage initialPage;
 	MyButton lost,login,register,exit;
-	JLabel welcome;
+	JLabel welcome,exitLabel;
 	
 	public InitialPage() {
 		
@@ -65,6 +66,29 @@ public class InitialPage extends ATMManage implements MouseListener{
 		else if(e.getSource()==register) {
 			initialPage.setVisible(false);
 			RegisterPage1.registerPage1=new RegisterPage1();
+		}
+		else if(e.getSource()==lost) {
+			initialPage.setVisible(false);
+			LostPage.lostPage=new LostPage();
+		}
+		else if(e.getSource()==exit) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					exitLabel=new JLabel("感谢使用本ATM管理系统！");
+					exitLabel.setFont(new Font("宋体",Font.BOLD,40));
+					exitLabel.setForeground(Color.RED);
+					exitLabel.setBounds(210,300,600,50);
+					panel.add(exitLabel);
+					paint(getGraphics());
+					try {
+						Thread.sleep(1500);
+						System.exit(0);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			});			
 		}
 	}
 

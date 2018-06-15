@@ -12,13 +12,13 @@ import javax.swing.JTextField;
 
 import util.MyButton;
 
-public class DepositPage extends ATMManage implements MouseListener,KeyListener{
+public class WithDrawPage extends ATMManage implements MouseListener,KeyListener{
 
-	static DepositPage depositPage;
+	static WithDrawPage withDrawPage;
 	private JLabel welcome;
 	private JTextField input;
 	private MyButton y100,y500,y1000,y2000,y5000,y10000,confirm,back;
-	public DepositPage() {
+	public WithDrawPage() {
 		//添加100元按钮
 		y100=new MyButton("100","gif");
 		y100.setBounds(700,300,170,60);
@@ -74,7 +74,7 @@ public class DepositPage extends ATMManage implements MouseListener,KeyListener{
 		panel.add(input);
 		input.addKeyListener(this);
 		
-		welcome=new JLabel("请输入存款金额：");
+		welcome=new JLabel("请输入取款金额：");
 		welcome.setBounds(100,100,700,100);
 		welcome.setFont(new Font("黑体", Font.BOLD, 50));
 		welcome.setForeground(Color.white);
@@ -85,8 +85,13 @@ public class DepositPage extends ATMManage implements MouseListener,KeyListener{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if(e.getSource()==confirm) {
-			BalancePage.balancePage=new BalancePage("存款成功","您的余额是：");
-			depositPage.dispose();
+			/*
+			 * if(余额不足){
+			 * 		JOptionPane.showMessageDialog(withDrawPage,"您的余额不足","错误",JOptionPane.ERROR_MESSAGE); 
+			 * }
+			 */
+			BalancePage.balancePage=new BalancePage("取款成功","您的余额是：");
+			withDrawPage.dispose();
 		}
 		else if(e.getSource()==y100) {
 			input.setText("100");
@@ -107,25 +112,21 @@ public class DepositPage extends ATMManage implements MouseListener,KeyListener{
 			input.setText("10000");
 		}
 		else if(e.getSource()==back) {
-			depositPage.dispose();
+			withDrawPage.dispose();
 			TradingPage.tradingPage.setVisible(true);
 		}
 	}
 	@Override
-	public void mousePressed(MouseEvent e) {
-		
+	public void mousePressed(MouseEvent e) {	
 	}
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		
 	}
 	@Override
-	public void mouseEntered(MouseEvent e) {
-		
+	public void mouseEntered(MouseEvent e) {	
 	}
 	@Override
-	public void mouseExited(MouseEvent e) {
-		
+	public void mouseExited(MouseEvent e) {	
 	}
 	@Override
 	public void keyTyped(KeyEvent e) {

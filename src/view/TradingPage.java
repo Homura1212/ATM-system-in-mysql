@@ -53,7 +53,7 @@ public class TradingPage extends ATMManage implements MouseListener{
 		panel.add(change);
 		change.addMouseListener(this);
 		//添加退出按钮
-		exit=new MyButton("exit","gif");
+		exit=new MyButton("loginexit","gif");
 		exit.setBounds(700,600,170,60);
 		panel.add(exit);
 		exit.addMouseListener(this);
@@ -73,25 +73,25 @@ public class TradingPage extends ATMManage implements MouseListener{
 			DepositPage.depositPage=new DepositPage();
 			tradingPage.setVisible(false);
 		}
+		//取款
+		else if(e.getSource()==withdraw) {
+			WithDrawPage.withDrawPage=new WithDrawPage();
+			tradingPage.setVisible(false);
+		}
+		//转账
+		else if(e.getSource()==transfer) {
+			TransferPage.transferPage=new TransferPage();
+			tradingPage.setVisible(false);
+		}
+		//余额查询
+		else if(e.getSource()==balance) {
+			BalancePage.balancePage=new BalancePage(null,"您的余额是：");
+			tradingPage.setVisible(false);
+		}
 		//退出
 		else if(e.getSource()==exit) {
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					exitLabel=new JLabel("感谢使用本ATM管理系统！");
-					exitLabel.setFont(new Font("宋体",Font.BOLD,40));
-					exitLabel.setForeground(Color.RED);
-					exitLabel.setBounds(210,300,600,50);
-					panel.add(exitLabel);
-					paint(getGraphics());
-					try {
-						Thread.sleep(1500);
-						System.exit(0);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-			});
+			tradingPage.dispose();
+			InitialPage.initialPage.setVisible(true);
 		}
 		
 	}

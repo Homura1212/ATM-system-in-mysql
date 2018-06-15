@@ -2,6 +2,8 @@ package view;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.regex.Matcher;
@@ -15,7 +17,7 @@ import model.UserInfo;
 import util.MyButton;
 import util.RegisterPanel;
 
-public class RegisterPage1 extends ATMManage implements MouseListener{
+public class RegisterPage1 extends ATMManage implements MouseListener,KeyListener{
 
 	static RegisterPage1 registerPage1;
 	private MyButton next,previous,exit,back;
@@ -77,6 +79,7 @@ public class RegisterPage1 extends ATMManage implements MouseListener{
 		telephone =new JTextField("13054836113");
 		telephone.setBounds(230,330,300,50);
 		registerPanel.add(telephone);
+		telephone.addKeyListener(this);
 		
 		addressLabel = new JLabel("家庭住址：");
 		addressLabel.setBounds(50,430,180,50);
@@ -214,6 +217,21 @@ public class RegisterPage1 extends ATMManage implements MouseListener{
 			}finally {
 			}
 		}
+	}
+	@Override
+	public void keyTyped(KeyEvent e) {
+		int keyChar = e.getKeyChar();                 
+        if(keyChar >= KeyEvent.VK_0 && keyChar <= KeyEvent.VK_9){  
+              
+        }else{  
+            e.consume(); //关键，屏蔽掉非法输入  
+        }  
+	}
+	@Override
+	public void keyPressed(KeyEvent e) {
+	}	
+	@Override
+	public void keyReleased(KeyEvent e) {
 	}
 
 }
