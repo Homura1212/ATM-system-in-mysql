@@ -8,19 +8,20 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import util.MyButton;
 
-public class LostPage extends ATMManage implements MouseListener,KeyListener{
-
-	static LostPage lostPage;
+public class LostPage2 extends ATMManage implements MouseListener,KeyListener{
+	
+	static LostPage2 lostPage;
 	private MyButton confirm,back;
 	private JLabel cardIDLabel,nameLabel,IDLabel,telephoneLabel,tips;
 	private JTextField cardID,name,ID,telephone;
-	public LostPage() {
-		
-		tips=new JLabel("请填写挂失银行卡的信息：");
+	
+	public LostPage2() {
+		tips=new JLabel("请填写要取消挂失银行卡的信息：");
 		tips.setBounds(50,30,640,50);
 		tips.setFont(new Font("宋体",Font.BOLD,25));
 		tips.setForeground(Color.orange);
@@ -104,10 +105,17 @@ public class LostPage extends ATMManage implements MouseListener,KeyListener{
 	public void mouseClicked(MouseEvent e) {
 		if(e.getSource()==back) {
 			lostPage.dispose();
-			InitialPage.initialPage.setVisible(true);
+			ChooseLostPage.chooseLostPage.setVisible(true);
 		}
 		else if(e.getSource()==confirm) {
-			
+			if(false) {
+				JOptionPane.showMessageDialog(lostPage, "卡号与其他信息不匹配，请检查后重新输入！","错误",JOptionPane.ERROR_MESSAGE);
+			}
+			else {
+				JOptionPane.showMessageDialog(lostPage, "取消挂失成功！");
+				lostPage.dispose();
+				InitialPage.initialPage.setVisible(true);
+			}
 		}
 	}
 	@Override
@@ -123,5 +131,4 @@ public class LostPage extends ATMManage implements MouseListener,KeyListener{
 	public void mouseExited(MouseEvent e) {
 	}
 
-	
 }
