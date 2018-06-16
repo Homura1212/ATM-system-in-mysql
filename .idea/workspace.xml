@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="43804614-f446-4c14-a2e8-46ee2a985caa" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dao/CardDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao/CardDao.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -23,8 +22,20 @@
       <file leaf-file-name="CardDao.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/dao/CardDao.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="22">
-              <caret line="190" column="23" selection-start-line="190" selection-start-column="23" selection-end-line="190" selection-end-column="23" />
+            <state relative-caret-position="758">
+              <caret line="402" column="29" selection-start-line="402" selection-start-column="29" selection-end-line="402" selection-end-column="29" />
+              <folding>
+                <element signature="method#executeInsert#0;class#CardDao#0" />
+                <element signature="method#executeDelete#0;class#CardDao#0" />
+                <element signature="method#executeLogin#0;class#CardDao#0" />
+                <element signature="method#executeBalance#0;class#CardDao#0" />
+                <element signature="method#executeOperate#0;class#CardDao#0" />
+                <element signature="method#executeTrans#0;class#CardDao#0" />
+                <element signature="method#executeGetUserID#0;class#CardDao#0" />
+                <element signature="method#executeIsLost#0;class#CardDao#0" />
+                <element signature="method#executeIsLost#1;class#CardDao#0" />
+                <element signature="method#executeGetPass#0;class#CardDao#0" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -88,7 +99,6 @@
     </navigator>
     <panes>
       <pane id="AndroidView" />
-      <pane id="PackagesPane" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -118,6 +128,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -195,11 +206,12 @@
       <workItem from="1529067996782" duration="8002000" />
       <workItem from="1529118309047" duration="1334000" />
       <workItem from="1529119693651" duration="5000" />
+      <workItem from="1529128539004" duration="1781000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9341000" />
+    <option name="totallyTimeSpent" value="11122000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -239,7 +251,55 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <option name="time" value="1" />
+    </breakpoint-manager>
+  </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/ATM-system-in-mysql.iml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/CardInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="88">
+          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dao/UserDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="792">
+          <caret line="42" column="57" selection-start-line="42" selection-start-column="57" selection-end-line="42" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dao/BaseDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="12" column="69" selection-start-line="12" selection-start-column="69" selection-end-line="12" selection-end-column="69" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dao/CardDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4180">
+          <caret line="190" column="23" selection-start-line="190" selection-start-column="23" selection-end-line="190" selection-end-column="23" />
+          <folding>
+            <element signature="method#executeInsert#0;class#CardDao#0" />
+            <element signature="method#executeDelete#0;class#CardDao#0" />
+            <element signature="method#executeLogin#0;class#CardDao#0" />
+            <element signature="method#executeBalance#0;class#CardDao#0" />
+            <element signature="method#executeOperate#0;class#CardDao#0" />
+            <element signature="method#executeTrans#0;class#CardDao#0" />
+            <element signature="method#executeGetUserID#0;class#CardDao#0" />
+            <element signature="method#executeIsLost#0;class#CardDao#0" />
+            <element signature="method#executeIsLost#1;class#CardDao#0" />
+            <element signature="method#executeGetPass#0;class#CardDao#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/ATM-system-in-mysql.iml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -335,8 +395,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/dao/CardDao.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="22">
-          <caret line="190" column="23" selection-start-line="190" selection-start-column="23" selection-end-line="190" selection-end-column="23" />
+        <state relative-caret-position="758">
+          <caret line="402" column="29" selection-start-line="402" selection-start-column="29" selection-end-line="402" selection-end-column="29" />
+          <folding>
+            <element signature="method#executeInsert#0;class#CardDao#0" />
+            <element signature="method#executeDelete#0;class#CardDao#0" />
+            <element signature="method#executeLogin#0;class#CardDao#0" />
+            <element signature="method#executeBalance#0;class#CardDao#0" />
+            <element signature="method#executeOperate#0;class#CardDao#0" />
+            <element signature="method#executeTrans#0;class#CardDao#0" />
+            <element signature="method#executeGetUserID#0;class#CardDao#0" />
+            <element signature="method#executeIsLost#0;class#CardDao#0" />
+            <element signature="method#executeIsLost#1;class#CardDao#0" />
+            <element signature="method#executeGetPass#0;class#CardDao#0" />
+          </folding>
         </state>
       </provider>
     </entry>

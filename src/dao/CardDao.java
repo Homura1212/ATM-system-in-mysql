@@ -259,4 +259,147 @@ public class CardDao extends BaseDao {
         }
         return balance;
     }
+    public static int executeGetCustomerID(String cardID) {
+        conn=getConn();
+        int customerID=0;
+        String sql="SELECT customerID FROM cardinfo WHERE cardID=?";
+        try {
+            PreparedStatement pStatement=conn.prepareStatement(sql);
+            pStatement.setString(1,cardID);
+            ResultSet rs=pStatement.executeQuery();
+            if(rs.next()){
+                customerID=rs.getInt("customerID");
+            }
+            else{
+                customerID=-1;
+            }
+            rs.close();
+            //验证是否存在该卡，存在state为0，不存在为1
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return customerID;
+    }
+
+    public static boolean executeIsLost(String cardID) {
+        conn=getConn();
+        boolean isLost=false;
+        String sql="SELECT IsReportLoss FROM cardinfo WHERE cardID=?";
+        try {
+            PreparedStatement pStatement=conn.prepareStatement(sql);
+            pStatement.setString(1,cardID);
+            ResultSet rs=pStatement.executeQuery();
+            if(rs.next()){
+                isLost=rs.getBoolean("IsReportLoss");
+            }
+            rs.close();
+            //验证是否存在该卡，存在state为0，不存在为1
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return isLost;
+    }
+    public static void executeSetLost(String cardID,boolean state) {
+        conn=getConn();
+        String sql="UPDATE cardinfo SET IsReportLoss=? WHERE cardID=?";
+        try {
+            PreparedStatement pStatement=conn.prepareStatement(sql);
+            pStatement.setBoolean(1,state);
+            pStatement.setString(2,cardID);
+            pStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+    public static String executeGetPass(String cardID) {
+        conn=getConn();
+        String myCardPass="";
+        String sql="SELECT cardID FROM cardinfo WHERE cardID=?";
+        try {
+            PreparedStatement pStatement=conn.prepareStatement(sql);
+            pStatement.setString(1,cardID);
+            ResultSet rs=pStatement.executeQuery();
+            if(rs.next()){
+                String cardIDForLogin  = rs.getString("cardID");
+                sql = "SELECT pass FROM cardinfo WHERE cardID=?";
+                pStatement=conn.prepareStatement(sql);
+                pStatement.setString(1,cardID);
+                rs=pStatement.executeQuery();
+                if(rs.next()){
+                    myCardPass = rs.getString("pass");
+                }
+                rs.close();
+            }
+            else{
+            }
+            rs.close();
+            //验证是否存在该卡，存在state为0，不存在为1
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return myCardPass;
+    }
+    public static int executeResetPass(String cardID,String newPass) {
+        conn=getConn();
+        int state=0;
+        String sql="SELECT cardID FROM cardinfo WHERE cardID=?";
+        try {
+            PreparedStatement pStatement=conn.prepareStatement(sql);
+            pStatement.setString(1,cardID);
+            ResultSet rs=pStatement.executeQuery();
+            if(rs.next()){
+               sql="UPDATE cardinfo SET pass=? WHERE cardID=?";
+               pStatement=conn.prepareStatement(sql);
+               pStatement.setString(1,newPass);
+               pStatement.setString(2,cardID);
+               pStatement.executeUpdate();
+               state=1;
+            }
+            else{
+                //不存在卡号
+                state=0;
+            }
+            rs.close();
+            //验证是否存在该卡，存在state为0，不存在为1
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return state;//1成功0失败
+    }
 }
