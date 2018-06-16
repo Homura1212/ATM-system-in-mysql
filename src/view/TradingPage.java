@@ -88,6 +88,11 @@ public class TradingPage extends ATMManage implements MouseListener{
 			BalancePage.balancePage=new BalancePage(null,"您的余额是：");
 			tradingPage.setVisible(false);
 		}
+		//修改密码
+		else if(e.getSource()==change) {
+			ResetPassPage.resetPassPage=new ResetPassPage();
+			tradingPage.setVisible(false);
+		}
 		//退出
 		else if(e.getSource()==exit) {
 			tradingPage.dispose();
