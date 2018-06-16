@@ -60,6 +60,7 @@ public class RegisterPage1 extends ATMManage implements MouseListener,KeyListene
 		registerPanel.add(nameLabel);
 		name =new JTextField("孟庆豆");
 		name.setBounds(230,130,300,50);
+		name.setFont(new Font("宋体",Font.BOLD,25));
 		registerPanel.add(name);
 
 		PIDLabel = new JLabel("身份证号：");
@@ -69,6 +70,7 @@ public class RegisterPage1 extends ATMManage implements MouseListener,KeyListene
 		registerPanel.add(PIDLabel);
 		PID =new JTextField("371202199710270814");
 		PID.setBounds(230,230,300,50);
+		PID.setFont(new Font("宋体",Font.BOLD,25));
 		registerPanel.add(PID);
 		
 		telephoneLabel = new JLabel("联系电话：");
@@ -78,6 +80,7 @@ public class RegisterPage1 extends ATMManage implements MouseListener,KeyListene
 		registerPanel.add(telephoneLabel);
 		telephone =new JTextField("13054836113");
 		telephone.setBounds(230,330,300,50);
+		telephone.setFont(new Font("宋体",Font.BOLD,25));
 		registerPanel.add(telephone);
 		telephone.addKeyListener(this);
 		
@@ -88,6 +91,7 @@ public class RegisterPage1 extends ATMManage implements MouseListener,KeyListene
 		registerPanel.add(addressLabel);
 		address =new JTextField("山东莱芜");
 		address.setBounds(230,430,300,50);
+		address.setFont(new Font("宋体",Font.BOLD,25));
 		registerPanel.add(address);
 		
 		setVisible(true);
@@ -101,6 +105,12 @@ public class RegisterPage1 extends ATMManage implements MouseListener,KeyListene
 				UserInfo user=new UserInfo(UserDao.executeQueryMaxID()+1,
 						name.getText(),PID.getText(),telephone.getText(),address.getText());
 				UserDao.executeInsert(user);
+				
+				
+						
+				//开户记录，开户金额
+				
+				
 				
 				registerPage1.setVisible(false);
 				RegisterPage2.registerPage2=new RegisterPage2();

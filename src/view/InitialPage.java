@@ -76,7 +76,7 @@ public class InitialPage extends ATMManage implements MouseListener{
 				@Override
 				public void run() {
 					exitLabel=new JLabel("感谢使用本ATM管理系统！");
-					exitLabel.setFont(new Font("宋体",Font.BOLD,40));
+					exitLabel.setFont(new Font("华文楷体",Font.BOLD,40));
 					exitLabel.setForeground(Color.RED);
 					exitLabel.setBounds(210,300,600,50);
 					panel.add(exitLabel);

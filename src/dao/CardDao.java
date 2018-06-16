@@ -1,6 +1,8 @@
 package dao;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import model.CardInfo;
 
@@ -19,7 +21,7 @@ public class CardDao extends BaseDao {
 			pStatement.setString(1,card.getCardID());
 			pStatement.setString(2, card.getCurType());
 			pStatement.setString(3, card.getSavingType());
-			pStatement.setDate(4, (Date) card.getOpenDate());
+			pStatement.setDate(4, card.getOpenDate());
 			pStatement.setFloat(5, card.getOpenMoney());
 			pStatement.setFloat(6, card.getBalance());
 			pStatement.setString(7, card.getPass());
@@ -61,6 +63,7 @@ public class CardDao extends BaseDao {
 		return true;
 	}
 
+	//判断登录用户名和密码是否正确
 	public static int executeLogin(String cardID,String pass) {
 		conn=getConn();
 		int state=1;//0为成功，1为查无此卡，2为密码错误
@@ -108,6 +111,8 @@ public class CardDao extends BaseDao {
 		}
 		return state;
 	}
+	
+	//查询余额
     public static float executeBalance(String cardID) {
         conn=getConn();
         float balance=0;//0为成功，1为查无此卡，2为密码错误
@@ -138,6 +143,7 @@ public class CardDao extends BaseDao {
         return balance;
     }
 
+    //存款或取款操作，由operateState决定
     public static float executeOperate(String cardID,float amount,boolean operateState) {
         conn=getConn();
         float balance=-1;//默认为-1
@@ -149,23 +155,26 @@ public class CardDao extends BaseDao {
             if(rs.next()){
                 float myBalance  = rs.getFloat("balance");
                 if(operateState==true){//存款
-                    sql="UPDATE cardinfo SET amount=? WHERE cardID=?";
+                    sql="UPDATE cardinfo SET balance=? WHERE cardID=?";
                     pStatement=conn.prepareStatement(sql);
                     pStatement.setFloat(1,(myBalance+amount));
                     pStatement.setString(2,cardID);
-                    if(pStatement.executeUpdate()!=0){//如果成功UPDATE
+                    if((pStatement.executeUpdate())!=0){//如果成功UPDATE
                         balance=myBalance+amount;
                         sql="INSERT INTO transinfo(transdate,cardID,transtype,transmoney) VALUES(?,?,?,?)";
                         pStatement=conn.prepareStatement(sql);
-                        pStatement.setDate(1,new Date(2018/6/15));
+                        Date transdate = new Date();    
+        				java.sql.Date date= new java.sql.Date(transdate.getTime());
+                        pStatement.setDate(1,date);
                         pStatement.setString(2,cardID);
                         pStatement.setString(3,"存款");
                         pStatement.setFloat(4,amount);
+                        pStatement.executeUpdate();
                     }
                 }
                 else {//取款
                     if(myBalance>=amount){
-                        sql="UPDATE cardinfo SET amount=? WHERE cardID=?";
+                        sql="UPDATE cardinfo SET balance=? WHERE cardID=?";
                         pStatement=conn.prepareStatement(sql);
                         pStatement.setFloat(1,(myBalance-amount));
                         pStatement.setString(2,cardID);
@@ -173,7 +182,9 @@ public class CardDao extends BaseDao {
                             balance=myBalance-amount;
                             sql="INSERT INTO transinfo(transdate,cardID,transtype,transmoney) VALUES(?,?,?,?)";
                             pStatement=conn.prepareStatement(sql);
-                            pStatement.setDate(1,new Date(2018/6/15));
+                            Date transdate = new Date();    
+            				java.sql.Date date= new java.sql.Date(transdate.getTime());
+                            pStatement.setDate(1,date);
                             pStatement.setString(2,cardID);
                             pStatement.setString(3,"取款");
                             pStatement.setFloat(4,amount);
@@ -202,6 +213,8 @@ public class CardDao extends BaseDao {
         }
         return balance;
     }
+    
+    
     public static float executeTrans(String cardID,String otherCardID,float amount) {
         conn=getConn();
         float balance=-1;//默认为-1
@@ -211,26 +224,35 @@ public class CardDao extends BaseDao {
             pStatement.setString(1,otherCardID);
             ResultSet rs=pStatement.executeQuery();
             if (rs.next()){
-                sql="SELECT balance FROM cardinfo WHERE cardID=?";
-                pStatement=conn.prepareStatement(sql);
+            	String sql1="SELECT balance FROM cardinfo WHERE cardID=?";
+                pStatement=conn.prepareStatement(sql1);
                 pStatement.setString(1,cardID);
-                rs=pStatement.executeQuery();
-                if(rs.next()){
-                    float myBalance = rs.getFloat("balance");
-                    if(myBalance>amount){
+                ResultSet rs1=pStatement.executeQuery();
+                
+                String sql2="SELECT balance FROM cardinfo WHERE cardID=?";
+                pStatement=conn.prepareStatement(sql2);
+                pStatement.setString(1,otherCardID);
+                ResultSet rs2=pStatement.executeQuery();
+                if(rs1.next() && rs2.next()){
+                    float myBalance = rs1.getFloat("balance");
+                    float otherBalance = rs2.getFloat("balance");
+                    if(myBalance>=amount){
+                    	balance=myBalance-amount;
                         sql="UPDATE cardinfo SET balance=? WHERE cardID=?";
                         pStatement=conn.prepareStatement(sql);
-                        pStatement.setFloat(1,(myBalance-amount));
+                        pStatement.setFloat(1,balance);
                         pStatement.setString(2,cardID);
                         pStatement.addBatch();
-                        pStatement.setFloat(1,(myBalance+amount));
+                        pStatement.setFloat(1,(otherBalance+amount));
                         pStatement.setString(2,otherCardID);
                         pStatement.addBatch();
                         pStatement.executeBatch();
 
                         sql="INSERT INTO transinfo(transdate,cardID,otherCardID,transtype,transmoney) VALUES(?,?,?,?,?) ";
                         pStatement=conn.prepareStatement(sql);
-                        pStatement.setDate(1,new Date(2018/6/15));
+                        Date transdate = new Date();    
+        				java.sql.Date date= new java.sql.Date(transdate.getTime());
+                        pStatement.setDate(1,date);
                         pStatement.setString(2,cardID);
                         pStatement.setString(3,otherCardID);
                         pStatement.setString(4,"转账");
@@ -259,6 +281,8 @@ public class CardDao extends BaseDao {
         }
         return balance;
     }
+    
+    //根据卡号返回用户ID
     public static int executeGetCustomerID(String cardID) {
         conn=getConn();
         int customerID=0;
@@ -288,16 +312,17 @@ public class CardDao extends BaseDao {
         return customerID;
     }
 
+    //查询用户是否挂失
     public static boolean executeIsLost(String cardID) {
         conn=getConn();
-        boolean isLost=false;
+        String isLost="否";
         String sql="SELECT IsReportLoss FROM cardinfo WHERE cardID=?";
         try {
             PreparedStatement pStatement=conn.prepareStatement(sql);
             pStatement.setString(1,cardID);
             ResultSet rs=pStatement.executeQuery();
             if(rs.next()){
-                isLost=rs.getBoolean("IsReportLoss");
+                isLost=rs.getString("IsReportLoss");
             }
             rs.close();
             //验证是否存在该卡，存在state为0，不存在为1
@@ -311,14 +336,17 @@ public class CardDao extends BaseDao {
                 e.printStackTrace();
             }
         }
-        return isLost;
+        if(isLost.equals("是")) return true;
+        return false;
     }
+    
+    //修改用户挂失状态
     public static void executeSetLost(String cardID,boolean state) {
         conn=getConn();
         String sql="UPDATE cardinfo SET IsReportLoss=? WHERE cardID=?";
         try {
             PreparedStatement pStatement=conn.prepareStatement(sql);
-            pStatement.setBoolean(1,state);
+            pStatement.setString(1,state?"是":"否");
             pStatement.setString(2,cardID);
             pStatement.executeUpdate();
 
@@ -333,6 +361,8 @@ public class CardDao extends BaseDao {
         }
 
     }
+    
+    //获取该用户密码
     public static String executeGetPass(String cardID) {
         conn=getConn();
         String myCardPass="";
@@ -368,6 +398,8 @@ public class CardDao extends BaseDao {
         }
         return myCardPass;
     }
+    
+    //重置该用户密码
     public static int executeResetPass(String cardID,String newPass) {
         conn=getConn();
         int state=0;

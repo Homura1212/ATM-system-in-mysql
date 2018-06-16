@@ -95,6 +95,7 @@ public class TradingPage extends ATMManage implements MouseListener{
 		}
 		//ÍË³ö
 		else if(e.getSource()==exit) {
+			LoginPage.CardID=null;
 			tradingPage.dispose();
 			InitialPage.initialPage.setVisible(true);
 		}

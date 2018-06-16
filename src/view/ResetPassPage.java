@@ -2,6 +2,8 @@ package view;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -10,9 +12,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import dao.CardDao;
 import util.MyButton;
 
-public class ResetPassPage extends ATMManage implements MouseListener{
+public class ResetPassPage extends ATMManage implements MouseListener,KeyListener{
 
 	static ResetPassPage resetPassPage;
 	private MyButton back,confirm;
@@ -37,6 +40,7 @@ public class ResetPassPage extends ATMManage implements MouseListener{
 		oldPass =new JPasswordField();
 		oldPass.setBounds(330,230,300,50);
 		oldPass.setFont(new Font("宋体",Font.BOLD,35));
+		oldPass.addKeyListener(this);
 		panel.add(oldPass);
 		
 		newPassLabel=new JLabel("新密码：");
@@ -47,6 +51,7 @@ public class ResetPassPage extends ATMManage implements MouseListener{
 		newPass =new JPasswordField();
 		newPass.setBounds(330,330,300,50);
 		newPass.setFont(new Font("宋体",Font.BOLD,35));
+		newPass.addKeyListener(this);
 		panel.add(newPass);
 		
 		newPassLabel2=new JLabel("确认密码：");
@@ -57,7 +62,9 @@ public class ResetPassPage extends ATMManage implements MouseListener{
 		newPass2 =new JPasswordField();
 		newPass2.setBounds(330,430,300,50);
 		newPass2.setFont(new Font("宋体",Font.BOLD,35));
+		newPass2.addKeyListener(this);
 		panel.add(newPass2);
+		
 		
 		
 		//添加确认按钮
@@ -79,7 +86,9 @@ public class ResetPassPage extends ATMManage implements MouseListener{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if(e.getSource()==confirm) {
+			removeLabel();
 			if(isRight()) {
+				removeLabel();
 				JOptionPane.showMessageDialog(resetPassPage, "修改成功！");
 				resetPassPage.dispose();
 				TradingPage.tradingPage.setVisible(true);
@@ -105,12 +114,14 @@ public class ResetPassPage extends ATMManage implements MouseListener{
 	
 	public boolean isRight() {
 		int flag=0;
-		//卡号不存在
-		if(false) {
-			wrongLabel4[0]=new JLabel("卡号不存在");
+		
+		String pass=CardDao.executeGetPass(LoginPage.CardID);
+		//原密码错误
+		if(!pass.equals(oldPass.getText())) {
+			wrongLabel4[0]=new JLabel("原密码错误");
 			wrongLabel4[0].setFont(new Font("宋体",Font.BOLD,15));
 			wrongLabel4[0].setForeground(Color.RED);
-			wrongLabel4[0].setBounds(200,270,100,50);
+			wrongLabel4[0].setBounds(400,270,100,50);
 			panel.add(wrongLabel4[0]);
 			repaint();
 			flag=1;
@@ -119,15 +130,27 @@ public class ResetPassPage extends ATMManage implements MouseListener{
 			rightLabel4[0]=new JLabel("√");
 			rightLabel4[0].setFont(new Font("宋体",Font.BOLD,15));
 			rightLabel4[0].setForeground(Color.green);
-			rightLabel4[0].setBounds(450,230,100,50);
+			rightLabel4[0].setBounds(650,230,100,50);
 			panel.add(rightLabel4[0]);
 			repaint();
 		}
-		if(false) {
-			wrongLabel4[1]=new JLabel("密码错误");
+		
+		if(flag==1) return false;
+		
+		if(newPass.getText().length()!=6) {
+			wrongLabel4[1]=new JLabel("请输入六位纯数字密码");
 			wrongLabel4[1].setFont(new Font("宋体",Font.BOLD,15));
 			wrongLabel4[1].setForeground(Color.RED);
-			wrongLabel4[1].setBounds(200,370,100,50);
+			wrongLabel4[1].setBounds(400,370,200,50);
+			panel.add(wrongLabel4[1]);
+			repaint();
+			flag=1;
+		}
+		else if(newPass.getText().equals(oldPass.getText())) {
+			wrongLabel4[1]=new JLabel("不能和原密码相同");
+			wrongLabel4[1].setFont(new Font("宋体",Font.BOLD,15));
+			wrongLabel4[1].setForeground(Color.RED);
+			wrongLabel4[1].setBounds(400,370,200,50);
 			panel.add(wrongLabel4[1]);
 			repaint();
 			flag=1;
@@ -136,9 +159,29 @@ public class ResetPassPage extends ATMManage implements MouseListener{
 			rightLabel4[1]=new JLabel("√");
 			rightLabel4[1].setFont(new Font("宋体",Font.BOLD,15));
 			rightLabel4[1].setForeground(Color.green);
-			rightLabel4[1].setBounds(450,330,100,50);
+			rightLabel4[1].setBounds(650,330,100,50);
 			panel.add(rightLabel4[1]);
 			repaint();
+		}
+		if(!newPass.getText().equals(newPass2.getText())
+				&& !newPass.getText().equals(oldPass.getText())) {
+			wrongLabel4[2]=new JLabel("两次密码输入不一致");
+			wrongLabel4[2].setFont(new Font("宋体",Font.BOLD,15));
+			wrongLabel4[2].setForeground(Color.RED);
+			wrongLabel4[2].setBounds(400,470,200,50);
+			panel.add(wrongLabel4[2]);
+			repaint();
+			flag=1;
+		}
+		else if(!newPass.getText().isEmpty()
+				&& !newPass.getText().equals(oldPass.getText())){
+			rightLabel4[2]=new JLabel("√");
+			rightLabel4[2].setFont(new Font("宋体",Font.BOLD,15));
+			rightLabel4[2].setForeground(Color.green);
+			rightLabel4[2].setBounds(650,430,100,50);
+			panel.add(rightLabel4[2]);
+			repaint();
+			CardDao.executeResetPass(LoginPage.CardID,newPass.getText());
 		}
 		if(flag==1) return false;
 		return true;
@@ -153,5 +196,21 @@ public class ResetPassPage extends ATMManage implements MouseListener{
 			}finally {
 			}
 		}
+	}
+
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		int keyChar = e.getKeyChar();                 
+        if(keyChar >= KeyEvent.VK_0 && keyChar <= KeyEvent.VK_9){  
+        }else{  
+            e.consume(); //关键，屏蔽掉非法输入  
+        } 
+	}
+	@Override
+	public void keyPressed(KeyEvent e) {
+	}
+	@Override
+	public void keyReleased(KeyEvent e) {
 	}
 }

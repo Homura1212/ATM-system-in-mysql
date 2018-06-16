@@ -2,6 +2,9 @@ package view;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.TextField;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.SimpleDateFormat;
@@ -24,7 +27,7 @@ import util.MyButton;
 import util.RandomID;
 import util.RegisterPanel;
 
-public class RegisterPage2 extends ATMManage implements MouseListener{
+public class RegisterPage2 extends ATMManage implements MouseListener,KeyListener{
 
 	static RegisterPage2 registerPage2;
 	private MyButton back,confirm;
@@ -36,7 +39,7 @@ public class RegisterPage2 extends ATMManage implements MouseListener{
 	private JComboBox curType,savingType;
 	private JPasswordField pass,passAgain;
 	private String cardID;
-	private float openMoney=10;
+	private JTextField openMoney;
 	
 	public RegisterPage2() {
 		
@@ -104,11 +107,17 @@ public class RegisterPage2 extends ATMManage implements MouseListener{
 		openDateLabel.setBounds(100,280,500,50);
 		registerPanel.add(openDateLabel);
         
-		openMoneyLabel=new JLabel("开户金额："+openMoney);
+		openMoneyLabel=new JLabel("开户金额：");
 		openMoneyLabel.setFont(new Font("宋体",Font.BOLD,25));
 		openMoneyLabel.setForeground(Color.orange);
 		openMoneyLabel.setBounds(100,360,500,50);
 		registerPanel.add(openMoneyLabel);
+		openMoney=new JTextField("10");
+		openMoney.setBounds(230,360,200,40);
+		openMoney.setFont(new Font("宋体",Font.BOLD,25));
+		openMoney.addKeyListener(this);
+		registerPanel.add(openMoney);
+		
 		
 		passLabel=new JLabel("密    码：");
 		passLabel.setFont(new Font("宋体",Font.BOLD,25));
@@ -117,6 +126,8 @@ public class RegisterPage2 extends ATMManage implements MouseListener{
 		registerPanel.add(passLabel);
 		pass=new JPasswordField();
 		pass.setBounds(230,445,200,40);
+		pass.setFont(new Font("宋体",Font.BOLD,35));
+		pass.addKeyListener(this);
 		registerPanel.add(pass);
 		
 		passAgainLabel=new JLabel("确认密码：");
@@ -126,6 +137,8 @@ public class RegisterPage2 extends ATMManage implements MouseListener{
 		registerPanel.add(passAgainLabel);
 		passAgain=new JPasswordField();
 		passAgain.setBounds(230,525,200,40);
+		passAgain.setFont(new Font("宋体",Font.BOLD,35));
+		passAgain.addKeyListener(this);
 		registerPanel.add(passAgain);
 		
 		setVisible(true);
@@ -139,8 +152,9 @@ public class RegisterPage2 extends ATMManage implements MouseListener{
 				removeLabel();
 				int customerID=UserDao.executeQueryMaxID();
 				java.sql.Date date= new java.sql.Date(openDate.getTime());
+				float money=Float.parseFloat(openMoney.getText());
 				CardInfo card=new CardInfo(cardID, curType.getSelectedItem().toString(), 
-						savingType.getSelectedItem().toString(), date, openMoney, openMoney,
+						savingType.getSelectedItem().toString(), date, money, money,
 						pass.getText(), false, customerID);
 				CardDao.executeInsert(card);
 				
@@ -246,5 +260,20 @@ public class RegisterPage2 extends ATMManage implements MouseListener{
 			}finally {
 			}
 		}
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		int keyChar = e.getKeyChar();                 
+        if(keyChar >= KeyEvent.VK_0 && keyChar <= KeyEvent.VK_9){
+        }else{  
+            e.consume(); //关键，屏蔽掉非法输入  
+        } 
+	}
+	@Override
+	public void keyPressed(KeyEvent e) {
+	}
+	@Override
+	public void keyReleased(KeyEvent e) {
 	}
 }

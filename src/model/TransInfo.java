@@ -5,18 +5,23 @@ import java.sql.Date;
 public class TransInfo {
 
 	private Date transDate;
-	private String cardID,transType;
+	private String cardID,otherCardID,transType;
 	private float transMoney;
 	private String remark;
+	
 
-	public TransInfo(Date transDate, String cardID, String transType, float transMoney, String remark) {
+	public TransInfo(Date transDate, String cardID, String otherCardID,
+			String transType, float transMoney, String remark) {
 		super();
 		this.transDate = transDate;
 		this.cardID = cardID;
+		this.otherCardID = otherCardID;
 		this.transType = transType;
 		this.transMoney = transMoney;
 		this.remark = remark;
+		
 	}
+	
 	
 	public Date getTransDate() {
 		return transDate;
@@ -48,6 +53,11 @@ public class TransInfo {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
-	
+	public String getOtherCardID() {
+		return otherCardID;
+	}
+	public void setOtherCardID(String otherCardID) {
+		this.otherCardID = otherCardID;
+	}
 	
 }

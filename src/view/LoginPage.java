@@ -10,6 +10,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import dao.CardDao;
+import dao.UserDao;
 import util.MyButton;
 import util.RegisterPanel;
 
@@ -23,6 +24,7 @@ public class LoginPage extends ATMManage implements MouseListener{
 	private RegisterPanel registerPanel;
 	private JLabel wrongLabel3[]=new JLabel[2];
 	private JLabel rightLabel3[]=new JLabel[2];
+	public static String CardID;
 	public LoginPage() {
 		
 		//添加上一步按钮
@@ -37,7 +39,7 @@ public class LoginPage extends ATMManage implements MouseListener{
 		panel.add(confirm);
 		confirm.addMouseListener(this);
 		
-		//添加注册面板内容
+		//添加登录面板内容
 		registerPanel=new RegisterPanel(.1f,500,610);
 		registerPanel.setBounds(130,50,500,610);
 		registerPanel.setOpaque(false);  
@@ -77,16 +79,16 @@ public class LoginPage extends ATMManage implements MouseListener{
 	public void mouseClicked(MouseEvent e) {
 		if(e.getSource()==confirm) {
 			removeLabel();
-			//此处应为查询数据库中用户名和密码
-			//卡号不存在
 			if(isRight()) {
 				System.out.println("登录");
 				removeLabel();
+				CardID=PID.getText();
 				TradingPage.tradingPage=new TradingPage();
 				loginPage.setVisible(false);
 			}
 		}
 		else if(e.getSource()==back) {
+			CardID=null;
 			InitialPage.initialPage.setVisible(true);
 			loginPage.setVisible(false);
 		}
@@ -114,7 +116,9 @@ public class LoginPage extends ATMManage implements MouseListener{
 	public boolean isRight() {
 		int flag=0;
 		//卡号不存在
-		if(false) {
+		int state=CardDao.executeLogin(PID.getText(),pass.getText());
+		System.out.println(state);
+		if(state==1) {
 			wrongLabel3[0]=new JLabel("卡号不存在");
 			wrongLabel3[0].setFont(new Font("宋体",Font.BOLD,15));
 			wrongLabel3[0].setForeground(Color.RED);
@@ -123,15 +127,21 @@ public class LoginPage extends ATMManage implements MouseListener{
 			repaint();
 			flag=1;
 		}
-		else {
+		else if(state==0){
 			rightLabel3[0]=new JLabel("√");
 			rightLabel3[0].setFont(new Font("宋体",Font.BOLD,15));
 			rightLabel3[0].setForeground(Color.green);
 			rightLabel3[0].setBounds(450,230,100,50);
 			registerPanel.add(rightLabel3[0]);
+			rightLabel3[1]=new JLabel("√");
+			rightLabel3[1].setFont(new Font("宋体",Font.BOLD,15));
+			rightLabel3[1].setForeground(Color.green);
+			rightLabel3[1].setBounds(450,330,100,50);
+			registerPanel.add(rightLabel3[1]);
+			repaint();
 			repaint();
 		}
-		if(false) {
+		if(state==2) {
 			wrongLabel3[1]=new JLabel("密码错误");
 			wrongLabel3[1].setFont(new Font("宋体",Font.BOLD,15));
 			wrongLabel3[1].setForeground(Color.RED);
@@ -139,14 +149,6 @@ public class LoginPage extends ATMManage implements MouseListener{
 			registerPanel.add(wrongLabel3[1]);
 			repaint();
 			flag=1;
-		}
-		else {
-			rightLabel3[1]=new JLabel("√");
-			rightLabel3[1].setFont(new Font("宋体",Font.BOLD,15));
-			rightLabel3[1].setForeground(Color.green);
-			rightLabel3[1].setBounds(450,330,100,50);
-			registerPanel.add(rightLabel3[1]);
-			repaint();
 		}
 		if(flag==1) return false;
 		return true;

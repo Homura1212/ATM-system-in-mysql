@@ -8,8 +8,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import dao.CardDao;
 import util.MyButton;
 
 public class WithDrawPage extends ATMManage implements MouseListener,KeyListener{
@@ -97,8 +99,15 @@ public class WithDrawPage extends ATMManage implements MouseListener,KeyListener
 			 * 		JOptionPane.showMessageDialog(withDrawPage,"您的余额不足","错误",JOptionPane.ERROR_MESSAGE); 
 			 * }
 			 */
-			BalancePage.balancePage=new BalancePage("取款成功","您的余额是：");
-			withDrawPage.dispose();
+			float balance=CardDao.executeOperate(LoginPage.CardID,
+					Float.parseFloat(input.getText()),false);
+			if(balance==-1){
+				JOptionPane.showMessageDialog(withDrawPage,"您的余额不足","错误",JOptionPane.ERROR_MESSAGE); 
+			}
+			else{
+				BalancePage.balancePage=new BalancePage("取款成功","您的余额是：");
+				withDrawPage.dispose();
+			}
 		}
 		else if(e.getSource()==y100) {
 			input.setText("100");

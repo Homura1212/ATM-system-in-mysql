@@ -7,6 +7,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JLabel;
 
+import dao.CardDao;
 import util.MyButton;
 
 public class BalancePage extends ATMManage implements MouseListener{
@@ -30,6 +31,7 @@ public class BalancePage extends ATMManage implements MouseListener{
 		balanceLabel.setForeground(Color.orange);
 		panel.add(balanceLabel);
 		
+		balance=CardDao.executeBalance(LoginPage.CardID);
 		bLabel=new JLabel(balance+"");
 		bLabel.setBounds(350,400,700,60);
 		bLabel.setFont(new Font("ºÚÌå", Font.BOLD, 50));

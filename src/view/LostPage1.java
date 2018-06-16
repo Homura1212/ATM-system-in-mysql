@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import dao.CardDao;
 import util.MyButton;
 
 public class LostPage1 extends ATMManage implements MouseListener,KeyListener{
@@ -108,14 +109,22 @@ public class LostPage1 extends ATMManage implements MouseListener,KeyListener{
 			ChooseLostPage.chooseLostPage.setVisible(true);
 		}
 		else if(e.getSource()==confirm) {
-			if(false) {
-				JOptionPane.showMessageDialog(lostPage, "卡号与其他信息不匹配，请检查后重新输入！","错误",JOptionPane.ERROR_MESSAGE);
+			int customerID=CardDao.executeGetCustomerID(cardID.getText());
+			if(customerID==-1) {
+				JOptionPane.showMessageDialog(lostPage, "挂失卡号不存在，请检查后重新输入","错误",JOptionPane.ERROR_MESSAGE);
 			}
 			else {
-				JOptionPane.showMessageDialog(lostPage, "挂失成功！");
-				lostPage.dispose();
-				InitialPage.initialPage.setVisible(true);
+				CardDao.executeSetLost(cardID.getText(), true);
+				if(false) {
+					JOptionPane.showMessageDialog(lostPage, "卡号与其他信息不匹配，请检查后重新输入","错误",JOptionPane.ERROR_MESSAGE);
+				}
+				else {
+					JOptionPane.showMessageDialog(lostPage, "挂失成功");
+					lostPage.dispose();
+					InitialPage.initialPage.setVisible(true);
+				}				
 			}
+
 		}
 	}
 	@Override
