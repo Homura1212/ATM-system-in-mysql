@@ -69,7 +69,7 @@ public class InitialPage extends ATMManage implements MouseListener{
 		}
 		else if(e.getSource()==lost) {
 			initialPage.setVisible(false);
-			LostPage.lostPage=new LostPage();
+			ChooseLostPage.chooseLostPage=new ChooseLostPage();
 		}
 		else if(e.getSource()==exit) {
 			SwingUtilities.invokeLater(new Runnable() {
