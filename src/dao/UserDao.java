@@ -84,6 +84,39 @@ public class UserDao extends BaseDao{
 			}
 		}
 		return state;
-	}	
+	}
+	public static boolean executeVerify(int customerID,String PID,String customerName,String telephone) {
+		conn=getConn();
+		boolean state=false;
+		String sql="SELECT PID,customerName,telephone FROM userinfo WHERE customerID=?";
+		try {
+			PreparedStatement pStatement=conn.prepareStatement(sql);
+			pStatement.setInt(1,customerID);
+			ResultSet rs=pStatement.executeQuery();
+			if(rs.next()){
+				String nowPID,nowCName,nowTelephone;
+				nowPID=rs.getString("PID");
+				nowCName=rs.getString("customerName");
+				nowTelephone=rs.getString("telephone");
+				if(nowPID.equals(PID) && nowCName.equals(customerName) && nowTelephone.equals(telephone)){
+					state=true;
+				}
+				else state=false;
+			}
+			else{
+				state=false;
+			}
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return state;
+	}
 	
 }
