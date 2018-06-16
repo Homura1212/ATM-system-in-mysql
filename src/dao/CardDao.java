@@ -434,4 +434,5 @@ public class CardDao extends BaseDao {
         }
         return state;//1³É¹¦0Ê§°Ü
     }
+
 }

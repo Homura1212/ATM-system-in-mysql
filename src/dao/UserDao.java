@@ -85,6 +85,8 @@ public class UserDao extends BaseDao{
 		}
 		return state;
 	}
+	
+	
 	public static boolean executeVerify(int customerID,String PID,String customerName,String telephone) {
 		conn=getConn();
 		boolean state=false;

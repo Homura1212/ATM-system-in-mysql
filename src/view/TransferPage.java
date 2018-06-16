@@ -7,6 +7,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.print.DocFlavor.INPUT_STREAM;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -91,18 +92,27 @@ public class TransferPage extends ATMManage implements MouseListener,KeyListener
 	public void mouseClicked(MouseEvent e) {
 		if(e.getSource()==confirm) {
 			if(!LoginPage.CardID.equals(TID.getText())) {
-				float balance=CardDao.executeTrans(LoginPage.CardID, TID.getText(),
+				if(TID.getText().isEmpty()) {
+			  		 JOptionPane.showMessageDialog(transferPage,"收款方账号不能为空","错误",JOptionPane.ERROR_MESSAGE); 
+				}
+				else if(Tmoney.getText().isEmpty() || Float.parseFloat(Tmoney.getText())==0) {
+			  		 JOptionPane.showMessageDialog(transferPage,"转账金额不能为空","错误",JOptionPane.ERROR_MESSAGE); 
+				}
+				else {
+					float balance=CardDao.executeTrans(LoginPage.CardID, TID.getText(),
 						Float.parseFloat(Tmoney.getText()));
-				if(balance==-2){
-				  		 JOptionPane.showMessageDialog(transferPage,"收款方账号不存在","错误",JOptionPane.ERROR_MESSAGE); 
+					if(balance==-2){
+					  		 JOptionPane.showMessageDialog(transferPage,"收款方账号不存在","错误",JOptionPane.ERROR_MESSAGE); 
+					}
+					else if(balance==-1){
+					  		JOptionPane.showMessageDialog(transferPage,"您的余额不足","错误",JOptionPane.ERROR_MESSAGE); 
+					}
+					else{
+					  	transferPage.dispose();
+					 	BalancePage.balancePage=new BalancePage("转账成功","您的余额是：");
+					}					
 				}
-				else if(balance==-1){
-				  		JOptionPane.showMessageDialog(transferPage,"您的余额不足","错误",JOptionPane.ERROR_MESSAGE); 
-				}
-				else{
-				  	transferPage.dispose();
-				 	BalancePage.balancePage=new BalancePage("转账成功","您的余额是：");
-				}			
+		
 			}
 			else {
 		  		JOptionPane.showMessageDialog(transferPage,"不可以给自己转账","错误",JOptionPane.ERROR_MESSAGE); 

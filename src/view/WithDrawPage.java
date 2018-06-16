@@ -94,20 +94,21 @@ public class WithDrawPage extends ATMManage implements MouseListener,KeyListener
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if(e.getSource()==confirm) {
-			/*
-			 * if(余额不足){
-			 * 		JOptionPane.showMessageDialog(withDrawPage,"您的余额不足","错误",JOptionPane.ERROR_MESSAGE); 
-			 * }
-			 */
-			float balance=CardDao.executeOperate(LoginPage.CardID,
-					Float.parseFloat(input.getText()),false);
-			if(balance==-1){
-				JOptionPane.showMessageDialog(withDrawPage,"您的余额不足","错误",JOptionPane.ERROR_MESSAGE); 
+			if(input.getText().isEmpty() || Float.parseFloat(input.getText())==0) {
+				JOptionPane.showMessageDialog(withDrawPage,"取款金额不能为空","错误",JOptionPane.ERROR_MESSAGE); 
 			}
-			else{
-				BalancePage.balancePage=new BalancePage("取款成功","您的余额是：");
-				withDrawPage.dispose();
+			else {
+				float balance=CardDao.executeOperate(LoginPage.CardID,
+						Float.parseFloat(input.getText()),false);
+				if(balance==-1){
+					JOptionPane.showMessageDialog(withDrawPage,"您的余额不足","错误",JOptionPane.ERROR_MESSAGE); 
+				}
+				else{
+					BalancePage.balancePage=new BalancePage("取款成功","您的余额是：");
+					withDrawPage.dispose();
+				}				
 			}
+
 		}
 		else if(e.getSource()==y100) {
 			input.setText("100");

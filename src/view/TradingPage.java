@@ -93,6 +93,11 @@ public class TradingPage extends ATMManage implements MouseListener{
 			ResetPassPage.resetPassPage=new ResetPassPage();
 			tradingPage.setVisible(false);
 		}
+		//交易记录
+		else if(e.getSource()==query) {
+			QueryPage.queryPage=new QueryPage();
+			tradingPage.setVisible(false);
+		}
 		//退出
 		else if(e.getSource()==exit) {
 			LoginPage.CardID=null;

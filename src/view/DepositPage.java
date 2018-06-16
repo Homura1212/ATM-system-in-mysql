@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import dao.CardDao;
@@ -93,10 +94,15 @@ public class DepositPage extends ATMManage implements MouseListener,KeyListener{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if(e.getSource()==confirm) {
-			CardDao.executeOperate(LoginPage.CardID,
-					Float.parseFloat(input.getText()),true);
-			BalancePage.balancePage=new BalancePage("存款成功","您的余额是：");
-			depositPage.dispose();
+			if(input.getText().isEmpty() || Float.parseFloat(input.getText())==0) {
+				JOptionPane.showMessageDialog(depositPage,"存款金额不能为空","错误",JOptionPane.ERROR_MESSAGE); 
+			}
+			else {
+				CardDao.executeOperate(LoginPage.CardID,
+						Float.parseFloat(input.getText()),true);
+				BalancePage.balancePage=new BalancePage("存款成功","您的余额是：");
+				depositPage.dispose();
+			}
 		}
 		else if(e.getSource()==y100) {
 			input.setText("100");

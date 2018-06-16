@@ -13,7 +13,7 @@ import util.MyButton;
 public class BalancePage extends ATMManage implements MouseListener{
 
 	static BalancePage balancePage;
-	private MyButton back;
+	private MyButton confirm;
 	private JLabel balanceLabel,tipsLabel,bLabel;
 	private float balance;
 	public BalancePage(String tips1,String tips2) {
@@ -39,17 +39,17 @@ public class BalancePage extends ATMManage implements MouseListener{
 		panel.add(bLabel);
 		
 		
-		//添加返回按钮
-		back=new MyButton("back","gif");
-		back.setBounds(30,600,170,60);
-		panel.add(back);
-		back.addMouseListener(this);
+		//添加确认按钮
+		confirm=new MyButton("confirm","gif");
+		confirm.setBounds(700,600,170,60);
+		panel.add(confirm);
+		confirm.addMouseListener(this);
 		
 		setVisible(true);
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if(e.getSource()==back) {
+		if(e.getSource()==confirm) {
 			balancePage.dispose();
 			TradingPage.tradingPage.setVisible(true);
 		}

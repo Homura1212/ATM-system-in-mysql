@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import dao.CardDao;
+import dao.UserDao;
 import util.MyButton;
 
 public class LostPage1 extends ATMManage implements MouseListener,KeyListener{
@@ -35,6 +36,7 @@ public class LostPage1 extends ATMManage implements MouseListener,KeyListener{
 		panel.add(cardIDLabel);
 		cardID =new JTextField();
 		cardID.setBounds(330,130,300,50);
+		cardID.setFont(new Font("宋体",Font.BOLD,25));
 		panel.add(cardID);
 		cardID.addKeyListener(this);
 		
@@ -45,6 +47,7 @@ public class LostPage1 extends ATMManage implements MouseListener,KeyListener{
 		panel.add(nameLabel);
 		name =new JTextField();
 		name.setBounds(330,230,300,50);
+		name.setFont(new Font("宋体",Font.BOLD,25));
 		panel.add(name);
 
 		IDLabel = new JLabel("身份证号：");
@@ -54,6 +57,7 @@ public class LostPage1 extends ATMManage implements MouseListener,KeyListener{
 		panel.add(IDLabel);
 		ID =new JTextField();
 		ID.setBounds(330,330,300,50);
+		ID.setFont(new Font("宋体",Font.BOLD,25));
 		panel.add(ID);
 		ID.addKeyListener(this);
 		
@@ -64,6 +68,7 @@ public class LostPage1 extends ATMManage implements MouseListener,KeyListener{
 		panel.add(telephoneLabel);
 		telephone =new JTextField();
 		telephone.setBounds(330,430,300,50);
+		telephone.setFont(new Font("宋体",Font.BOLD,25));
 		panel.add(telephone);
 		telephone.addKeyListener(this);
 		
@@ -114,14 +119,20 @@ public class LostPage1 extends ATMManage implements MouseListener,KeyListener{
 				JOptionPane.showMessageDialog(lostPage, "挂失卡号不存在，请检查后重新输入","错误",JOptionPane.ERROR_MESSAGE);
 			}
 			else {
-				CardDao.executeSetLost(cardID.getText(), true);
-				if(false) {
+				boolean isRight=UserDao.executeVerify(customerID,ID.getText(),name.getText(),telephone.getText());
+				if(!isRight) {
 					JOptionPane.showMessageDialog(lostPage, "卡号与其他信息不匹配，请检查后重新输入","错误",JOptionPane.ERROR_MESSAGE);
 				}
 				else {
-					JOptionPane.showMessageDialog(lostPage, "挂失成功");
-					lostPage.dispose();
-					InitialPage.initialPage.setVisible(true);
+					if(!CardDao.executeIsLost(cardID.getText())) {
+						CardDao.executeSetLost(cardID.getText(), true);
+						JOptionPane.showMessageDialog(lostPage, "挂失成功");
+						lostPage.dispose();
+						InitialPage.initialPage.setVisible(true);					
+					}
+					else {
+						JOptionPane.showMessageDialog(lostPage, "该银行卡已挂失","错误",JOptionPane.ERROR_MESSAGE);
+					}
 				}				
 			}
 
