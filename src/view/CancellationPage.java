@@ -21,11 +21,13 @@ public class CancellationPage extends ATMManage implements MouseListener{
 	private MyButton back,confirm;
 	private JLabel tips,IDLabel,nameLabel,opdenDateLabel,savingTypeLabel,curTypeLabel,balanceLabel;
 	private RegisterPanel registerPanel;
+	CardInfo cardInfo;
+	UserInfo userInfo;
 	public CancellationPage() {
 
-		CardInfo cardInfo=CardDao.executeGetAllCardInfo(LoginPage.CardID);
+		cardInfo=CardDao.executeGetAllCardInfo(LoginPage.CardID);
 		System.out.println(cardInfo.getCardID());
-		UserInfo userInfo=UserDao.executeGetAllUserInfo(LoginPage.CardID);
+		userInfo=UserDao.executeGetAllUserInfo(LoginPage.CardID);
 		System.out.println(userInfo.getPID());
 		
 		registerPanel=new RegisterPanel(0.1f, 640,610);
@@ -99,7 +101,13 @@ public class CancellationPage extends ATMManage implements MouseListener{
 			TradingPage.tradingPage.setVisible(true);
 		}
 		else if(e.getSource()==confirm) {
-			
+			CardDao.executeDelete(LoginPage.CardID);
+			if(CardDao.isPossessAnotherCard(cardInfo.getCustomerID())==0) {
+				UserDao.executeDelete(cardInfo.getCustomerID());
+			}
+			cancellationPage.dispose();
+			TradingPage.tradingPage.dispose();
+			InitialPage.initialPage.setVisible(true);
 		}
 	}
 	@Override
