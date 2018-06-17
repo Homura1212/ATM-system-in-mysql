@@ -446,7 +446,7 @@ public class CardDao extends BaseDao {
             ResultSet rs=pStatement.executeQuery();
             if(rs.next()){
                 result=new CardInfo(rs.getString("cardID"),rs.getString("curType"),rs.getString("savingType"),rs.getDate("openDate"),rs.getFloat("openMoney"),
-                        rs.getFloat("balance"),rs.getString("pass"),rs.getBoolean("isReportLoss"),rs.getString("customerID")) ;
+                        rs.getFloat("balance"),rs.getString("pass"),rs.getBoolean("isReportLoss"),rs.getInt("customerID")) ;
             }
             rs.close();
             //验证是否存在该卡，存在state为0，不存在为1
@@ -463,4 +463,30 @@ public class CardDao extends BaseDao {
         return result;
     }
 
+    public static int isPossessAnotherCard(String customerID) {
+        conn=getConn();
+        int quantityOfCards=0;
+        String sql="SELECT COUNT(*) FROM cardinfo WHERE customerID=?";
+        //String sql="SELECT customerID,customerName,pID,telephone,address FROM Card_User WHERE cardID=?";
+        try {
+            PreparedStatement pStatement=conn.prepareStatement(sql);
+            pStatement.setString(1,customerID);
+            ResultSet rs=pStatement.executeQuery();
+            if(rs.next()){
+                quantityOfCards=rs.getInt(1);
+            }
+            rs.close();
+            //验证是否存在该卡，存在state为0，不存在为1
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return quantityOfCards;
+    }
 }
