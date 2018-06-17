@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
@@ -80,11 +81,18 @@ public class LoginPage extends ATMManage implements MouseListener{
 		if(e.getSource()==confirm) {
 			removeLabel();
 			if(isRight()) {
-				System.out.println("登录");
 				removeLabel();
-				CardID=PID.getText();
-				TradingPage.tradingPage=new TradingPage();
-				loginPage.setVisible(false);
+				boolean isloss=CardDao.executeIsLost(PID.getText());
+				if(isloss) {
+					JOptionPane.showMessageDialog(loginPage, "该银行卡已挂失，请取消挂失后重试","错误",JOptionPane.ERROR_MESSAGE);
+				}
+				else{
+					System.out.println("登录");
+					CardID=PID.getText();
+					TradingPage.tradingPage=new TradingPage();
+					loginPage.setVisible(false);
+				}
+				
 			}
 		}
 		else if(e.getSource()==back) {
