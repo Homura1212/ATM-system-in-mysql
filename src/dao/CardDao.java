@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import model.CardInfo;
@@ -433,6 +434,33 @@ public class CardDao extends BaseDao {
             }
         }
         return state;//1成功0失败
+    }
+
+    public static CardInfo executeGetAllCardInfo(String cardID) {
+        conn=getConn();
+        CardInfo result=null ;
+        String sql="SELECT * FROM cardinfo WHERE cardID=?";
+        try {
+            PreparedStatement pStatement=conn.prepareStatement(sql);
+            pStatement.setString(1,cardID);
+            ResultSet rs=pStatement.executeQuery();
+            if(rs.next()){
+                result=new CardInfo(rs.getString("cardID"),rs.getString("curType"),rs.getString("savingType"),rs.getDate("openDate"),rs.getFloat("openMoney"),
+                        rs.getFloat("balance"),rs.getString("pass"),rs.getBoolean("isReportLoss"),rs.getString("customerID")) ;
+            }
+            rs.close();
+            //验证是否存在该卡，存在state为0，不存在为1
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
     }
 
 }

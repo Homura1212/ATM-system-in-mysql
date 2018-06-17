@@ -12,7 +12,7 @@ public class CardInfo {
 	private int customerID;
 	
 	public CardInfo(String cardID, String curType, String savingType, Date openDate, float openMoney, float balance,
-			String pass, boolean isReportLoss, int customerID) {
+					String pass, boolean isReportLoss, int customerID) {
 		super();
 		this.cardID = cardID;
 		this.curType = curType;
@@ -24,7 +24,7 @@ public class CardInfo {
 		IsReportLoss = isReportLoss;
 		this.customerID = customerID;
 	}
-	
+
 	public String getCardID() {
 		return cardID;
 	}

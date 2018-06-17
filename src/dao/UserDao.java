@@ -120,5 +120,31 @@ public class UserDao extends BaseDao{
 		}
 		return state;
 	}
+	public static UserInfo executeGetAllCardInfo(String cardID) {
+		conn=getConn();
+		UserInfo result=null ;
+		String sql="SELECT * FROM userinfo WHERE customerID=(SELECT customerID FROM cardinfo WHERE cardID=?)";
+        //String sql="SELECT customerID,customerName,pID,telephone,address FROM Card_User WHERE cardID=?";
+		try {
+			PreparedStatement pStatement=conn.prepareStatement(sql);
+			pStatement.setString(1,cardID);
+			ResultSet rs=pStatement.executeQuery();
+			if(rs.next()){
+				result=new UserInfo(rs.getInt("customerID"),rs.getString("customerName"),rs.getString("pID"),rs.getString("telephone"),rs.getString("address")) ;
+			}
+			rs.close();
+			//验证是否存在该卡，存在state为0，不存在为1
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
 	
 }
