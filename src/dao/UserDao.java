@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 
 import model.UserInfo;
@@ -26,7 +27,11 @@ public class UserDao extends BaseDao{
 			pStatement.setString(5, user.getAddress());
 			
 			state=pStatement.executeUpdate();
-		} catch (SQLException e) {
+			
+		} catch (SQLIntegrityConstraintViolationException e) {
+			state=-1;
+		} 
+		catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
 			try {
@@ -120,7 +125,7 @@ public class UserDao extends BaseDao{
 		}
 		return state;
 	}
-	public static UserInfo executeGetAllCardInfo(String cardID) {
+	public static UserInfo executeGetAllUserInfo(String cardID) {
 		conn=getConn();
 		UserInfo result=null ;
 		String sql="SELECT * FROM userinfo WHERE customerID=(SELECT customerID FROM cardinfo WHERE cardID=?)";

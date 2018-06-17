@@ -13,7 +13,7 @@ import util.MyButton;
 public class TradingPage extends ATMManage implements MouseListener{
 
 	static TradingPage tradingPage;
-	private MyButton deposit,withdraw,transfer,query,balance,change,exit;
+	private MyButton deposit,withdraw,transfer,query,balance,change,exit,cancellation;
 	private JLabel welcome,exitLabel;
 	public TradingPage() {
 		
@@ -52,6 +52,13 @@ public class TradingPage extends ATMManage implements MouseListener{
 		change.setBounds(30,500,170,60);
 		panel.add(change);
 		change.addMouseListener(this);
+		
+		//添加注销按钮
+		cancellation=new MyButton("cancellation","gif");
+		cancellation.setBounds(30,600,170,60);
+		panel.add(cancellation);
+		cancellation.addMouseListener(this);
+		
 		//添加退出按钮
 		exit=new MyButton("loginexit","gif");
 		exit.setBounds(700,600,170,60);
@@ -96,6 +103,11 @@ public class TradingPage extends ATMManage implements MouseListener{
 		//交易记录
 		else if(e.getSource()==query) {
 			QueryPage.queryPage=new QueryPage();
+			tradingPage.setVisible(false);
+		}
+		//注销
+		else if(e.getSource()==cancellation) {
+			CancellationPage.cancellationPage=new CancellationPage();
 			tradingPage.setVisible(false);
 		}
 		//退出

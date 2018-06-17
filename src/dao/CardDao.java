@@ -446,7 +446,7 @@ public class CardDao extends BaseDao {
             ResultSet rs=pStatement.executeQuery();
             if(rs.next()){
                 result=new CardInfo(rs.getString("cardID"),rs.getString("curType"),rs.getString("savingType"),rs.getDate("openDate"),rs.getFloat("openMoney"),
-                        rs.getFloat("balance"),rs.getString("pass"),rs.getBoolean("isReportLoss"),rs.getString("customerID")) ;
+                        rs.getFloat("balance"),rs.getString("pass"),rs.getString("isReportLoss").equals("是")?true:false,rs.getInt("customerID")) ;
             }
             rs.close();
             //验证是否存在该卡，存在state为0，不存在为1
